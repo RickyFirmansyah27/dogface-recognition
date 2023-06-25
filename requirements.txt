@@ -1,4 +1,3 @@
-cv2
 glob
 pandas
 numpy
