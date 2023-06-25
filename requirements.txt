@@ -1,5 +1,4 @@
-cv2
-glob
+glob2
 pandas
 numpy
 tensorflow
