@@ -35,57 +35,57 @@ def get_files(directory):
     return count
 
 def train_model(is_training_mode=True):
-    # train_dir = "datasetticate/split_dataset/train"
-    # val_dir = "datasetticate/split_dataset/validation"
-    # test_dir = "datasetticate/split_dataset/test"
+    train_dir = "datasetticate/split_dataset/train"
+    val_dir = "datasetticate/split_dataset/validation"
+    test_dir = "datasetticate/split_dataset/test"
 
-    # train_samples = get_files(train_dir)
-    # num_classes = len(glob.glob(train_dir + "/*"))
-    # val_samples = get_files(val_dir)
-    # test_samples = get_files(test_dir)
+    train_samples = get_files(train_dir)
+    num_classes = len(glob.glob(train_dir + "/*"))
+    val_samples = get_files(val_dir)
+    test_samples = get_files(test_dir)
 
-    # train_datagen = ImageDataGenerator(rescale=1./255)
-    # val_datagen = ImageDataGenerator(rescale=1./255)
-    # test_datagen = ImageDataGenerator(rescale=1./255)
+    train_datagen = ImageDataGenerator(rescale=1./255)
+    val_datagen = ImageDataGenerator(rescale=1./255)
+    test_datagen = ImageDataGenerator(rescale=1./255)
 
-    # input_shape = (128, 128, 3)
-    # train_generator = train_datagen.flow_from_directory(train_dir, target_size=(150, 150), batch_size=10)
-    # val_generator = test_datagen.flow_from_directory(val_dir, shuffle=True, target_size=(150, 150), batch_size=10)
-    # test_generator = test_datagen.flow_from_directory(test_dir, shuffle=True, target_size=(150, 150), batch_size=10)
+    input_shape = (128, 128, 3)
+    train_generator = train_datagen.flow_from_directory(train_dir, target_size=(150, 150), batch_size=10)
+    val_generator = test_datagen.flow_from_directory(val_dir, shuffle=True, target_size=(150, 150), batch_size=10)
+    test_generator = test_datagen.flow_from_directory(test_dir, shuffle=True, target_size=(150, 150), batch_size=10)
 
-    # model = keras.Sequential([
-    #     keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)),
-    #     keras.layers.MaxPooling2D((2, 2)),
-    #     keras.layers.Conv2D(64, (3, 3), activation='relu'),
-    #     keras.layers.MaxPooling2D((2, 2)),
-    #     keras.layers.Conv2D(128, (3, 3), activation='relu'),
-    #     keras.layers.MaxPooling2D((2, 2)),
-    #     keras.layers.Conv2D(128, (3, 3), activation='relu'),
-    #     keras.layers.MaxPooling2D((2, 2)),
-    #     keras.layers.Flatten(),
-    #     keras.layers.Dense(512, activation='relu'),
-    #     keras.layers.Dense(2, activation='sigmoid')
-    # ])
+    model = keras.Sequential([
+        keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)),
+        keras.layers.MaxPooling2D((2, 2)),
+        keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        keras.layers.MaxPooling2D((2, 2)),
+        keras.layers.Conv2D(128, (3, 3), activation='relu'),
+        keras.layers.MaxPooling2D((2, 2)),
+        keras.layers.Conv2D(128, (3, 3), activation='relu'),
+        keras.layers.MaxPooling2D((2, 2)),
+        keras.layers.Flatten(),
+        keras.layers.Dense(512, activation='relu'),
+        keras.layers.Dense(2, activation='sigmoid')
+    ])
 
-    # earlyStopping = keras.callbacks.EarlyStopping(
-    #     monitor='val_accuracy',
-    #     mode='auto',
-    #     baseline=None,
-    #     restore_best_weights=True,
-    #     patience=20,
-    #     verbose=1
-    # )
+    earlyStopping = keras.callbacks.EarlyStopping(
+        monitor='val_accuracy',
+        mode='auto',
+        baseline=None,
+        restore_best_weights=True,
+        patience=20,
+        verbose=1
+    )
 
-    # model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
     if is_training_mode:
         st.write('Training Mode Active')
-        # hist = model.fit(train_generator, steps_per_epoch=10, epochs=50, validation_data=val_generator,
-        #                 validation_steps=1, callbacks=[earlyStopping])
+        hist = model.fit(train_generator, steps_per_epoch=10, epochs=50, validation_data=val_generator,
+                        validation_steps=1, callbacks=[earlyStopping])
 
-    #     model.save("model.h5")
-    # elif os.path.exists("model.h5"):
-    #     model = keras.models.load_model("model.h5")
+        model.save("model.h5")
+    elif os.path.exists("model.h5"):
+        model = keras.models.load_model("model.h5")
 
 
 def process_and_predict(file):
