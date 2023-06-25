@@ -1,0 +1,11 @@
+os 
+cv2
+glob
+pandas
+numpy
+tensorflow
+matplotlib
+keras
+pillow
+streamlit
+opencv-python
