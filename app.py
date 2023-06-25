@@ -108,7 +108,7 @@ def process_and_predict(file, model):
         prediction = 'Golden'
     elif maxnum == 1:
         prediction = 'Husky'
-    else:
+    elif maxnum != 0 and maxnum != 1:
         prediction = 'Unknown'
 
     st.write(' is a ' + prediction)
