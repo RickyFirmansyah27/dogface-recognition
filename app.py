@@ -125,6 +125,7 @@ if __name__ == "__main__":
         st.write('Sedang melakukan testing')
         if image is not None:
             model = train_model(is_training_mode=training_mode)
+            st.write('Training')
             process_and_predict(image, model)
         else:
             st.write('File testing belum diunggah')
