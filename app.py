@@ -80,12 +80,14 @@ def train_model(is_training_mode=True):
 
     if is_training_mode:
         st.write('Training Mode Active')
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         hist = model.fit(train_generator, steps_per_epoch=10, epochs=50, validation_data=val_generator,
                         validation_steps=1, callbacks=[earlyStopping])
 
         model.save("model.h5")
     elif os.path.exists("model.h5"):
-        model = keras.models.load_model("model.h5")
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        # model = keras.models.load_model("model.h5")
 
 
 def process_and_predict(file):
