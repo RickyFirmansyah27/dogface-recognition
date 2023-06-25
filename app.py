@@ -80,17 +80,16 @@ def train_model(is_training_mode=True):
 
     if is_training_mode:
         st.write('Training Mode Active')
-        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         hist = model.fit(train_generator, steps_per_epoch=10, epochs=50, validation_data=val_generator,
                         validation_steps=1, callbacks=[earlyStopping])
-
         model.save("model.h5")
+        return model
     elif os.path.exists("model.h5"):
+        model = keras.models.load_model("model.h5")
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        # model = keras.models.load_model("model.h5")
+        return model
 
-
-def process_and_predict(file):
+def process_and_predict(file, model):
     im = file
     width, height = im.size
     if width == height:
@@ -118,9 +117,12 @@ def process_and_predict(file):
     maxnum = np.argmax(model.predict(ar))
     if maxnum == 0:
         prediction = 'Golden'
-    if maxnum == 1:
+    elif maxnum == 1:
         prediction = 'Husky'
-    st.write(' is a ' + prediction)
+    else:
+        prediction = 'Unknown'
+
+    st.write(file + ' is a ' + prediction)
 
     st.image(im, caption=prediction, use_column_width=True)
 
@@ -140,11 +142,13 @@ if __name__ == "__main__":
     
     st.header("Face Recognition using Keras")
    
-    if (st.button('Testing dengan Keras', key=3)):
+    if st.button('Testing dengan Keras', key=3):
         st.write('Sedang melakukan testing')
         if image is not None:
-            process_and_predict(image)
+            model = train_model(is_training_mode)
+            process_and_predict(image, model)
         else:
             st.write('File testing belum diunggah')
     else:
         st.write('')
+
