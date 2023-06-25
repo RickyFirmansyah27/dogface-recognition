@@ -15,9 +15,9 @@ def get_files(directory):
         return 0
     count = 0
     for current_path, dirs, files in os.walk(directory):
-        for dr in dirs:
-            count += len(glob.glob(os.path.join(current_path, dr + "/*")))
+        count += len(files)
     return count
+
 
 def train_model(is_training_mode=True):
     train_dir = "dataset/split_dataset/train"
