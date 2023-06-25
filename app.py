@@ -35,9 +35,9 @@ def get_files(directory):
     return count
 
 def train_model(is_training_mode=True):
-    train_dir = "datasetticate/split_dataset/train"
-    val_dir = "datasetticate/split_dataset/validation"
-    test_dir = "datasetticate/split_dataset/test"
+    train_dir = "dataset/split_dataset/train"
+    val_dir = "dataset/split_dataset/validation"
+    test_dir = "dataset/split_dataset/test"
 
     train_samples = get_files(train_dir)
     num_classes = len(glob.glob(train_dir + "/*"))
@@ -48,9 +48,8 @@ def train_model(is_training_mode=True):
     val_datagen = ImageDataGenerator(rescale=1./255)
     test_datagen = ImageDataGenerator(rescale=1./255)
 
-    input_shape = (128, 128, 3)
     train_generator = train_datagen.flow_from_directory(train_dir, target_size=(150, 150), batch_size=10)
-    val_generator = test_datagen.flow_from_directory(val_dir, shuffle=True, target_size=(150, 150), batch_size=10)
+    val_generator = val_datagen.flow_from_directory(val_dir, shuffle=True, target_size=(150, 150), batch_size=10)
     test_generator = test_datagen.flow_from_directory(test_dir, shuffle=True, target_size=(150, 150), batch_size=10)
 
     model = keras.Sequential([
