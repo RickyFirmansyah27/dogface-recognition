@@ -111,7 +111,7 @@ def process_and_predict(file, model):
     else:
         prediction = 'Unknown'
 
-    st.write(file + ' is a ' + prediction)
+    st.write(' is a ' + prediction)
 
     st.image(im, caption=prediction, use_column_width=True)
 
