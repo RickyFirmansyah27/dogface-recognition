@@ -24,6 +24,16 @@ def train_model(is_training_mode=True):
     val_dir = "dataset/split_dataset/validation"
     test_dir = "dataset/split_dataset/test"
 
+    train_samples = get_files(train_dir)
+    num_classes = len(glob.glob(train_dir + "/*"))
+    val_samples = get_files(val_dir)
+    test_samples = get_files(test_dir)
+
+    st.write('train_samples:', train_samples)
+    st.write('num_classes:', num_classes)
+    st.write('val_samples:', val_samples)
+    st.write('test_samples:', test_samples)
+
     train_datagen = ImageDataGenerator(rescale=1./255)
     val_datagen = ImageDataGenerator(rescale=1./255)
     test_datagen = ImageDataGenerator(rescale=1./255)

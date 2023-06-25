@@ -6,6 +6,7 @@ import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import keras
+import streamlit as st
 from PIL import Image
 
 from keras.layers import Dense
@@ -34,9 +35,9 @@ def get_files(directory):
             count += len(glob.glob(os.path.join(current_path, dr + "/*")))
     return count
 
-train_dir = "datasetticate/split_dataset/train"
-val_dir = "datasetticate/split_dataset/validation"
-test_dir = "datasetticate/split_dataset/test"
+train_dir = "dataset/split_dataset/train"
+val_dir = "dataset/split_dataset/validation"
+test_dir = "dataset/split_dataset/test"
 
 train_samples = get_files(train_dir)
 num_classes = len(glob.glob(train_dir + "/*"))
