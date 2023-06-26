@@ -30,45 +30,14 @@ def train_model(is_training_mode=True):
     test_samples = get_files(test_dir)
 
     st.write('train_samples:', train_samples)
-
-    train_datagen = ImageDataGenerator(rescale=1./255)
-    val_datagen = ImageDataGenerator(rescale=1./255)
-    test_datagen = ImageDataGenerator(rescale=1./255)
-
-    train_generator = train_datagen.flow_from_directory(train_dir, target_size=(150, 150), batch_size=10)
-    val_generator = val_datagen.flow_from_directory(val_dir, shuffle=True, target_size=(150, 150), batch_size=10)
-    test_generator = test_datagen.flow_from_directory(test_dir, shuffle=True, target_size=(150, 150), batch_size=10)
-
-    model = Sequential([
-        Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)),
-        MaxPooling2D((2, 2)),
-        Conv2D(64, (3, 3), activation='relu'),
-        MaxPooling2D((2, 2)),
-        Conv2D(128, (3, 3), activation='relu'),
-        MaxPooling2D((2, 2)),
-        Conv2D(128, (3, 3), activation='relu'),
-        MaxPooling2D((2, 2)),
-        Flatten(),
-        Dense(512, activation='relu'),
-        Dense(2, activation='sigmoid')
-    ])
-
-    earlyStopping = EarlyStopping(
-        monitor='val_accuracy',
-        mode='auto',
-        baseline=None,
-        restore_best_weights=True,
-        patience=20,
-        verbose=1
-    )
-
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    st.write('num_classes:', num_classes)
+    st.write('val_samples:', val_samples)
+    st.write('test_samples:', test_samples)
 
     if is_training_mode:
         st.write('Training Mode Active')
-        hist = model.fit(train_generator, steps_per_epoch=train_samples//10, epochs=50, validation_data=val_generator,
-                        validation_steps=val_samples//10, callbacks=[earlyStopping])
-        model.save("model.h5")
+        model = keras.models.load_model("model.h5")
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         return model
     elif os.path.exists("model.h5"):
         model = keras.models.load_model("model.h5")
@@ -105,10 +74,10 @@ def process_and_predict(file, model):
         prediction = 'Golden'
     elif maxnum == 1:
         prediction = 'Husky'
-    else:
+    elif maxnum != 0 and maxnum != 1:
         prediction = 'Unknown'
 
-    st.write(file + ' is a ' + prediction)
+    st.write(' is a ' + prediction)
 
     st.image(im, caption=prediction, use_column_width=True)
 
