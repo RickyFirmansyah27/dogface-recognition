@@ -36,6 +36,47 @@ def train_model(is_training_mode=True):
 
     if is_training_mode:
         st.write('Training Mode Active')
+        # Load and compile your model architecture here
+        model = Sequential()
+        # Add layers to your model
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+        # Load and preprocess your training data using ImageDataGenerator
+        train_datagen = ImageDataGenerator(rescale=1./255)
+        train_generator = train_datagen.flow_from_directory(
+            train_dir,
+            target_size=(150, 150),
+            batch_size=32,
+            class_mode='binary')
+
+        # Train your model
+        model.fit(train_generator, epochs=10)
+        
+        # Save your trained model
+        model.save("model.h5")
+
+        return model
+    elif os.path.exists("model.h5"):
+        model = keras.models.load_model("model.h5")
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        return model
+
+    train_dir = "dataset/split_dataset/train"
+    val_dir = "dataset/split_dataset/validation"
+    test_dir = "dataset/split_dataset/test"
+
+    train_samples = get_files(train_dir)
+    num_classes = len(glob.glob(train_dir + "/*"))
+    val_samples = get_files(val_dir)
+    test_samples = get_files(test_dir)
+
+    st.write('train_samples:', train_samples)
+    st.write('num_classes:', num_classes)
+    st.write('val_samples:', val_samples)
+    st.write('test_samples:', test_samples)
+
+    if is_training_mode:
+        st.write('Training Mode Active')
         model = keras.models.load_model("model.h5")
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         return model
