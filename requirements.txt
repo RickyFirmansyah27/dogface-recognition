@@ -7,3 +7,4 @@ keras
 pillow
 streamlit
 opencv-python
+scikit-metrics
